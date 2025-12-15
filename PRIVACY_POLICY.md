@@ -11,7 +11,7 @@
 ASSETO AI Generate ("we", "our", "the Plugin") is a Figma plugin that generates images using Google's Gemini AI technology. This privacy policy describes how we handle your data when you use our Plugin.
 
 **Plugin Developer:** Yosep Rendi  
-**Contact:** support.asseto@gmail.com  
+**Contact:** yoseprendip@gmail.com  
 **Plugin Type:** Figma Desktop Plugin
 
 ---
