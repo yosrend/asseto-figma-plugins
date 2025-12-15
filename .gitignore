@@ -1,8 +1,38 @@
 # Node
 *.log
 *.log.*
-node_modules
+node_modules/
 
+# Build output
 out/
 dist/
 code.js
+ui.html
+
+# Development documentation (internal only)
+agents.md
+DEBUG_*.md
+RELOAD_INSTRUCTIONS.md
+QUICK_TEST_GUIDE.md
+GIT_PUSH_SUCCESS.md
+DOCUMENTATION_INDEX.md
+DOCS_ANALYSIS.md
+
+# Testing documentation (contains example credentials)
+TESTING_GUIDE.md
+
+# Compliance documents (internal)
+COMPLIANCE_*.md
+
+# Version history (internal development notes)
+V2.*.md
+RELEASE_NOTES_*.md
+
+# Complete documentation (too detailed for public)
+DOCUMENTATION_FINAL.md
+
+# Keep only these public docs:
+# - README.md
+# - PRIVACY_POLICY.md
+# - SETUP.md
+# - CHANGELOG.md (if created)
