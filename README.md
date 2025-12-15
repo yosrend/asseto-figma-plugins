@@ -291,7 +291,7 @@ Asseto/
 
 ## 📞 Support
 
-**Email:** support.asseto@gmail.com  
+**Email:** yoseprendip@gmail.com  
 **Response Time:** Within 48 hours
 
 **Documentation:** [Full Documentation](https://github.com/yoseprendi/asseto-ai-generate/blob/main/DOCUMENTATION_FINAL.md)  
