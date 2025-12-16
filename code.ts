@@ -89,6 +89,19 @@ figma.ui.onmessage = async (msg: { type: string; data?: any; apiKey?: string }) 
       
       console.log('✅ ASSETO: Image hash:', image.hash);
       
+      // CRITICAL FIX: Verify image is fully embedded by reading it back
+      // This ensures image data is properly stored in the document
+      try {
+        const verifyBytes = await image.getBytesAsync();
+        if (!verifyBytes || verifyBytes.length === 0) {
+          throw new Error('Image bytes verification failed - image not embedded');
+        }
+        console.log('✅ ASSETO: Image embedding verified, bytes:', verifyBytes.length);
+      } catch (verifyError) {
+        console.error('❌ ASSETO: Image verification failed:', verifyError);
+        throw new Error('Failed to verify embedded image - ' + (verifyError instanceof Error ? verifyError.message : 'Unknown error'));
+      }
+      
       // Get metadata from message
       const { batchIndex, batchTotal, prompt, aspectRatio, customWidth, customHeight } = msg.data;
       const isBatchInsert = typeof batchIndex === 'number' && typeof batchTotal === 'number';
