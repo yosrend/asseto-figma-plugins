@@ -76,7 +76,7 @@ figma.ui.onmessage = async (msg: { type: string; data?: any; apiKey?: string }) 
       let image: Image;
       try {
         image = figma.createImage(imageBytes);
-        console.log('✅ ASSETO: createImage() successful');
+        console.log('✅ ASSETO: createImage() successful, hash:', image.hash);
       } catch (createError) {
         console.error('❌ ASSETO: createImage() failed:', createError);
         throw new Error('Failed to create image from data - ' + (createError instanceof Error ? createError.message : 'Unknown error'));
@@ -87,19 +87,21 @@ figma.ui.onmessage = async (msg: { type: string; data?: any; apiKey?: string }) 
         throw new Error('Image object created but hash is missing');
       }
       
-      console.log('✅ ASSETO: Image hash:', image.hash);
-      
-      // CRITICAL FIX: Verify image is fully embedded by reading it back
-      // This ensures image data is properly stored in the document
+      // CRITICAL FIX: Get image size to force Figma to fully decode the image
+      // This ensures image data is properly processed and embedded in document
+      let imageWidth = 1024;
+      let imageHeight = 1024;
       try {
-        const verifyBytes = await image.getBytesAsync();
-        if (!verifyBytes || verifyBytes.length === 0) {
-          throw new Error('Image bytes verification failed - image not embedded');
+        const size = await image.getSizeAsync();
+        if (!size || size.width === 0 || size.height === 0) {
+          throw new Error('Image size invalid - image may be corrupted');
         }
-        console.log('✅ ASSETO: Image embedding verified, bytes:', verifyBytes.length);
-      } catch (verifyError) {
-        console.error('❌ ASSETO: Image verification failed:', verifyError);
-        throw new Error('Failed to verify embedded image - ' + (verifyError instanceof Error ? verifyError.message : 'Unknown error'));
+        imageWidth = size.width;
+        imageHeight = size.height;
+        console.log('✅ ASSETO: Image decoded successfully, actual size:', imageWidth, 'x', imageHeight);
+      } catch (sizeError) {
+        console.error('❌ ASSETO: Failed to get image size:', sizeError);
+        throw new Error('Failed to decode image - ' + (sizeError instanceof Error ? sizeError.message : 'Unknown error'));
       }
       
       // Get metadata from message
@@ -167,6 +169,16 @@ figma.ui.onmessage = async (msg: { type: string; data?: any; apiKey?: string }) 
       } catch (fillError) {
         console.error('❌ ASSETO: Failed to set fills:', fillError);
         throw new Error('Failed to apply image fill - ' + (fillError instanceof Error ? fillError.message : 'Unknown error'));
+      }
+      
+      // CRITICAL FIX: Force Figma to render and cache the image by exporting it
+      // This ensures image is properly embedded in document for cross-project copy
+      try {
+        await rect.exportAsync({ format: 'PNG', constraint: { type: 'SCALE', value: 0.1 } });
+        console.log('✅ ASSETO: Image rendering forced via export - embedded in document');
+      } catch (exportError) {
+        // Export failure is not critical, just log it
+        console.warn('⚠️ ASSETO: Export verification failed (non-critical):', exportError);
       }
       
       // Position based on whether it's batch or single
