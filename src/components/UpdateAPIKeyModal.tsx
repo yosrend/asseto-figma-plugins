@@ -105,7 +105,7 @@ export default function UpdateAPIKeyModal({
                 setError('');
               }}
               placeholder="AIza..."
-              className={`w-full px-4 py-2 pr-12 border-2 rounded-lg focus:outline-none transition-colors ${
+              className={`w-full px-4 py-3 pr-12 border-2 rounded-lg focus:outline-none transition-colors ${
                 error
                   ? 'border-red-300 focus:border-red-500'
                   : 'border-gray-300 focus:border-indigo-500'
@@ -116,7 +116,7 @@ export default function UpdateAPIKeyModal({
               className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 text-gray-400 hover:text-indigo-600 transition-colors"
               title="Paste from clipboard"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
             </button>
@@ -127,7 +127,8 @@ export default function UpdateAPIKeyModal({
 
           <button
             onClick={handleSubmit}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-all"
+            disabled={!apiKey.trim()}
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-md"
           >
             Update API Key
           </button>
